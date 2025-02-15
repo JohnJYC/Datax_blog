@@ -1,6 +1,16 @@
 Rails.application.routes.draw do
-  post '/login', to: 'sessions#create'  # 指定 POST 请求指向 SessionsController 的 create 方法
   resources :users
+  resources :articles
+  resources :tags
+  resources :categories
+  get "tags/index"
+  get "tags/show"
+  get "tags/new"
+  get "tags/edit"
+  get "tags/create"
+  get "tags/update"
+  get "tags/destroy"
+  post '/login', to: 'sessions#create'  # 指定 POST 请求指向 SessionsController 的 create 方法
   get "categories/index"
   get "categories/show"
   get "categories/new"
