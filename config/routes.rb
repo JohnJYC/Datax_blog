@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
   resources :users
-  resources :articles
-  resources :tags
-  resources :categories
   resources :articles do
     collection do
       get 'search'
     end
   end
+  resources :tags
+  resources :categories
+
   post '/login', to: 'sessions#create'
   get  '/logout', to: 'sessions#destroy'
 
