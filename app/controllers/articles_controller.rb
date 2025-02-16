@@ -1,12 +1,29 @@
 class ArticlesController < ApplicationController
-  # 如果有用户登录验证需求，可启用以下回调
+  # Optional: 如果需要用户登录验证，可以启用以下回调
   # before_action :authenticate_user!
   before_action :set_article, only: [:show, :edit, :update, :destroy]
 
   # GET /articles
   def index
-    # includes(:user, :category, :tag) 可减少 N+1 查询
-    @articles = Article.includes(:user, :category, :tag).all
+    if params[:user_id].present?
+      @articles = Article.includes(:user, :category, :tag).where(user_id: params[:user_id])
+    else
+      @articles = Article.includes(:user, :category, :tag).all
+    end
+    render json: @articles
+  end
+
+  def search
+    if params[:q].present?
+      search_term = "%#{params[:q].downcase}%"
+      @articles = Article.where(
+        "LOWER(title) LIKE ? OR LOWER(content) LIKE ?",
+        search_term,
+        search_term
+      )
+    else
+      @articles = Article.all
+    end
     render json: @articles
   end
 
@@ -29,8 +46,7 @@ class ArticlesController < ApplicationController
   # POST /articles
   def create
     @article = Article.new(article_params)
-    # 如果使用 Devise，可以关联当前登录用户
-    # @article.user = current_user
+    # 如果使用 Devise，可关联当前登录用户，如：@article.user = current_user
 
     if @article.save
       render json: @article, status: :created

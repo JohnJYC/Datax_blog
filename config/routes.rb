@@ -3,37 +3,14 @@ Rails.application.routes.draw do
   resources :articles
   resources :tags
   resources :categories
-  get "tags/index"
-  get "tags/show"
-  get "tags/new"
-  get "tags/edit"
-  get "tags/create"
-  get "tags/update"
-  get "tags/destroy"
-  post '/login', to: 'sessions#create'  # 指定 POST 请求指向 SessionsController 的 create 方法
-  get "categories/index"
-  get "categories/show"
-  get "categories/new"
-  get "categories/edit"
-  get "categories/create"
-  get "categories/update"
-  get "categories/destroy"
-  get "sessions/new"
-  get "sessions/create"
-  get "sessions/destroy"
-  get "users/new"
-  get "users/create"
-  get "users/show"
-  get "users/edit"
-  get "users/update"
-  get "users/destroy"
-  get "articles/index"
-  get "articles/show"
-  get "articles/new"
-  get "articles/edit"
-  get "articles/create"
-  get "articles/update"
-  get "articles/destroy"
+  resources :articles do
+    collection do
+      get 'search'
+    end
+  end
+  post '/login', to: 'sessions#create'
+  get  '/logout', to: 'sessions#destroy'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
