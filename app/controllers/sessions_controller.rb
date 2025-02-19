@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    # 如果使用 session 登录，这里可以重置 session
+    # 如果使用 session 登录
     reset_session
     render json: { message: 'Logged out successfully' }, status: :ok
   end
